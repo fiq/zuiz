@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zeta Global Celebration Pub Quiz</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    body { margin: 0; background: #0b0f14; color: #e9eef5; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 18px; }
+    .card{
+      background: #121a24; border: 1px solid #223043; border-radius: 18px;
+      padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    h2 { font-size: 16px; margin: 18px 0 10px; opacity: .95; }
+    .meta { display:flex; flex-wrap:wrap; gap:10px; font-size: 13px; opacity:.95; margin-bottom: 12px; }
+    .pill { background:#0f263d; border:1px solid #244a6a; padding: 6px 10px; border-radius: 999px; }
+    .q { font-size: 18px; line-height: 1.35; margin: 10px 0 14px; }
+    .opts { display:grid; gap:10px; }
+    button.opt{
+      text-align:left; padding: 14px; border-radius: 14px;
+      border:1px solid #2a3a50; background:#0e1520; color:#e9eef5;
+      font-size: 16px; cursor:pointer;
+    }
+    button.opt:active { transform: scale(.99); }
+    button.opt[disabled] { cursor:not-allowed; opacity:.78; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content: space-between; margin-top: 14px; }
+    .btn { padding: 10px 12px; border-radius: 12px; border:1px solid #2a3a50; background:#0e1520; color:#e9eef5; cursor:pointer; }
+    .btn.primary { background:#1f6feb; border-color:#1f6feb; }
+    .btn.danger { background:#b62324; border-color:#b62324; }
+    .note { margin-top: 10px; font-size: 14px; opacity: .9; }
+    .small { font-size: 13px; opacity: .85; }
+    .ok { color: #7ee787; }
+    .bad { color: #ffa198; }
+    .warn { color: #ffdf5d; }
+    input[type="text"], input[type="password"], input[type="number"]{
+      width: 100%; padding: 12px; border-radius: 12px;
+      border: 1px solid #2a3a50; background:#0e1520; color:#e9eef5;
+      font-size: 16px; margin-top: 10px;
+    }
+    .divider { height:1px; background:#223043; margin:14px 0; }
+    .review { display:grid; gap:10px; margin-top: 12px; }
+    .reviewItem { border:1px solid #223043; border-radius: 14px; padding: 12px; background:#0e1520; }
+    .reviewTop { display:flex; justify-content: space-between; gap:10px; flex-wrap: wrap; }
+    .tag { display:inline-block; padding: 3px 8px; border-radius: 999px; border: 1px solid #2a3a50; font-size: 12px; }
+    .tag.ok { border-color:#2ea043; color:#7ee787; }
+    .tag.bad { border-color:#f85149; color:#ffa198; }
+    .tag.warn { border-color:#d29922; color:#ffdf5d; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width: 720px){ .grid2 { grid-template-columns: 1fr; } }
+    table { width:100%; border-collapse: collapse; }
+    th, td { border:1px solid #223043; padding: 10px; text-align:left; }
+    th { background:#0f263d; }
+    .right { text-align:right; }
+    .muted { opacity:.85; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="app"></div>
+    <div class="note small">Local-only app (no server). Progress saved on this device.</div>
+  </div>
+
+<script>
+const QUIZ = {"title": "Zeta Global Celebration Pub Quiz", "rounds": [{"name": "ROUND 1 – Zeta Global Basics", "weight": 1, "max": 5, "qids": [1, 2, 3, 4, 5], "endIndex": 4}, {"name": "ROUND 2 – Founders & Origin Stories (Zeta)", "weight": 2, "max": 10, "qids": [6, 7, 8, 9, 10], "endIndex": 9}, {"name": "ROUND 3 – Zeta Platform & Technology", "weight": 2, "max": 10, "qids": [11, 12, 13, 14, 15], "endIndex": 14}, {"name": "ROUND 4 – Products & Origins (Sailthru, Liveclicker, Stellar)", "weight": 2, "max": 10, "qids": [16, 17, 18, 19, 20], "endIndex": 19}, {"name": "ROUND 5 – Loyalty & Celebration Facts", "weight": 3, "max": 15, "qids": [21, 22, 23, 24, 25], "endIndex": 24}], "questions": [{"id": 1, "round": "ROUND 1 – Zeta Global Basics", "weight": 1, "text": "Zeta Global operates primarily in which industry?", "options": ["Financial services", "Marketing technology", "Telecoms", "E-commerce logistics"], "correct": 1, "explain": "Zeta is a marketing technology company focused on connecting data, identity and activation for enterprise brands."}, {"id": 2, "round": "ROUND 1 – Zeta Global Basics", "weight": 1, "text": "In which year was Zeta Global founded?", "options": ["2001", "2007", "2012", "2018"], "correct": 1, "explain": "Zeta was founded in 2007."}, {"id": 3, "round": "ROUND 1 – Zeta Global Basics", "weight": 1, "text": "Zeta’s founding vision is best described as helping brands do what?", "options": ["Run more ads", "Connect customer data to smarter experiences", "Replace CRM systems", "Build mobile hardware"], "correct": 1, "explain": "Celebration framing: connect customer data to better decisions and customer experiences."}, {"id": 4, "round": "ROUND 1 – Zeta Global Basics", "weight": 1, "text": "Zeta mainly serves which type of customers?", "options": ["Small local businesses", "Start-ups only", "Enterprise and large brands", "Hardware manufacturers"], "correct": 2, "explain": "Zeta is designed for enterprise scale and complexity."}, {"id": 5, "round": "ROUND 1 – Zeta Global Basics", "weight": 1, "text": "True or False: Zeta’s focus on first-party data became even more valuable as privacy expectations increased.", "options": ["True", "False"], "correct": 0, "explain": "First-party data and identity are increasingly central as privacy expectations and regulations evolve."}, {"id": 6, "round": "ROUND 2 – Founders & Origin Stories (Zeta)", "weight": 2, "text": "Who founded Zeta Global?", "options": ["Marc Benioff and Reid Hoffman", "David A. Steinberg and John Sculley", "Elon Musk and Peter Thiel", "Jack Dorsey and Biz Stone"], "correct": 1, "explain": "Zeta was founded by David A. Steinberg; John Sculley played an early strategic role."}, {"id": 7, "round": "ROUND 2 – Founders & Origin Stories (Zeta)", "weight": 2, "text": "Before founding Zeta, David A. Steinberg founded which company?", "options": ["IntraLinks", "DoubleClick", "Right Media", "AppNexus"], "correct": 2, "explain": "Right Media helped pioneer programmatic advertising infrastructure."}, {"id": 8, "round": "ROUND 2 – Founders & Origin Stories (Zeta)", "weight": 2, "text": "Right Media was acquired by which company?", "options": ["Google", "Facebook", "Yahoo", "Microsoft"], "correct": 2, "explain": "Right Media was acquired by Yahoo in 2007."}, {"id": 9, "round": "ROUND 2 – Founders & Origin Stories (Zeta)", "weight": 2, "text": "John Sculley is best known for being CEO of which company before his Zeta involvement?", "options": ["IBM", "Oracle", "Apple", "Intel"], "correct": 2, "explain": "John Sculley is widely known for his time as Apple’s CEO."}, {"id": 10, "round": "ROUND 2 – Founders & Origin Stories (Zeta)", "weight": 2, "text": "During John Sculley’s time at Apple, which co-founder later returned and led Apple through a major new phase of growth?", "options": ["Steve Wozniak", "Steve Jobs", "Ron Wayne", "Jonathan Ive"], "correct": 1, "explain": "Positive framing: Steve Jobs later returned and helped define Apple’s modern era."}, {"id": 11, "round": "ROUND 3 – Zeta Platform & Technology", "weight": 2, "text": "Zeta’s platform combines data, identity, and what else?", "options": ["Hardware", "Payments", "AI and activation", "Telecom infrastructure"], "correct": 2, "explain": "The platform story is data + identity + AI-driven decisioning + activation."}, {"id": 12, "round": "ROUND 3 – Zeta Platform & Technology", "weight": 2, "text": "Identity resolution is most useful because it helps brands do what?", "options": ["Reduce storage costs", "Recognise customers across channels", "Remove consent requirements", "Replace encryption"], "correct": 1, "explain": "Consistent recognition across channels enables coordinated experiences."}, {"id": 13, "round": "ROUND 3 – Zeta Platform & Technology", "weight": 2, "text": "Zeta’s AI is primarily used to do what?", "options": ["Generate images", "Improve marketing decisions using customer signals", "Replace marketing teams", "Design websites"], "correct": 1, "explain": "Practical AI: improving decisions using customer signals."}, {"id": 14, "round": "ROUND 3 – Zeta Platform & Technology", "weight": 2, "text": "Which metric best matches Zeta’s long-term growth orientation?", "options": ["Click-through rate", "Open rate", "Customer lifetime value", "Number of campaigns sent"], "correct": 2, "explain": "CLV captures long-term value beyond short-term clicks."}, {"id": 15, "round": "ROUND 3 – Zeta Platform & Technology", "weight": 2, "text": "Which channel is often central in Zeta-style lifecycle activation?", "options": ["Radio", "Print", "Email", "Fax"], "correct": 2, "explain": "Email remains high-ROI, especially with personalisation and measurement."}, {"id": 16, "round": "ROUND 4 – Products & Origins (Sailthru, Liveclicker, Stellar)", "weight": 2, "text": "Which statement best describes how Sailthru became part of Zeta Global?", "options": ["Zeta acquired Sailthru directly", "Zeta acquired Marigold’s Enterprise business, which included Sailthru", "Sailthru merged with Zeta", "Sailthru was spun out of Zeta"], "correct": 1, "explain": "Factual framing: Sailthru came with the Marigold Enterprise acquisition."}, {"id": 17, "round": "ROUND 4 – Products & Origins (Sailthru, Liveclicker, Stellar)", "weight": 2, "text": "Sailthru is best described as focusing on which capability?", "options": ["Payments", "Personalised messaging and customer journeys", "Telecom routing", "Hardware optimisation"], "correct": 1, "explain": "Sailthru is associated with personalised messaging and customer journeys."}, {"id": 18, "round": "ROUND 4 – Products & Origins (Sailthru, Liveclicker, Stellar)", "weight": 2, "text": "Sailthru was founded with an early focus on enabling what kind of experience?", "options": ["Uniform messaging for all audiences", "Personalised messaging informed by user behaviour", "Offline-only marketing", "Manual campaign scheduling"], "correct": 1, "explain": "Celebration of early personalisation using behaviour and interest signals."}, {"id": 19, "round": "ROUND 4 – Products & Origins (Sailthru, Liveclicker, Stellar)", "weight": 2, "text": "Liveclicker became known for enabling what kind of content experience?", "options": ["Pre-rendered static content", "Dynamic content that can adapt at view time", "Warehouse automation", "Card-present payments"], "correct": 1, "explain": "Liveclicker is known for dynamic content that can update at view/open time."}, {"id": 20, "round": "ROUND 4 – Products & Origins (Sailthru, Liveclicker, Stellar)", "weight": 2, "text": "Which channel is Liveclicker most famously associated with enhancing?", "options": ["Push notifications", "In-app messaging", "Email", "Search ads"], "correct": 2, "explain": "Liveclicker is most often discussed in the context of enhancing email experiences."}, {"id": 21, "round": "ROUND 5 – Loyalty & Celebration Facts", "weight": 3, "text": "Marigold Loyalty was previously known as what?", "options": ["Bloom Rewards", "Stellar Loyalty", "Orbit Loyalty", "Rocket Rewards"], "correct": 1, "explain": "Stellar Loyalty is the earlier name for what became Marigold Loyalty."}, {"id": 22, "round": "ROUND 5 – Loyalty & Celebration Facts", "weight": 3, "text": "Stellar Loyalty is best described as supporting which outcome?", "options": ["Short-term promotions only", "Long-term customer relationships through loyalty programmes", "Replacing identity resolution", "Device analytics"], "correct": 1, "explain": "Loyalty programmes deepen relationships over time."}, {"id": 23, "round": "ROUND 5 – Loyalty & Celebration Facts", "weight": 3, "text": "Why is loyalty a natural companion to Zeta’s lifecycle marketing story?", "options": ["It replaces acquisition", "It strengthens retention and lifetime value", "It reduces the need for data", "It only matters for small businesses"], "correct": 1, "explain": "Retention compounds and supports long-term customer value."}, {"id": 24, "round": "ROUND 5 – Loyalty & Celebration Facts", "weight": 3, "text": "Which data approach best matches Zeta’s long-term strategy?", "options": ["Third-party cookie-only data", "First-party customer data", "Anonymous-only sessions", "Social graph mining"], "correct": 1, "explain": "First-party data aligns with modern privacy expectations."}, {"id": 25, "round": "ROUND 5 – Loyalty & Celebration Facts", "weight": 3, "text": "Finish the sentence: Zeta helps brands move from campaigns to ________.", "options": ["Dashboards", "Pipelines", "Relationships and experiences", "Ad networks"], "correct": 2, "explain": "Celebration line: long-term relationships and experiences, not just one-off campaigns."}]};
+const PW_HASH = "ef809616390533e15df60e10478b6e5c7040a2152f762f173ef6c014efffd3dc";
+const TEAM_STORAGE = "zeta_quiz_team_state_v1";
+const HOST_STORAGE = "zeta_quiz_host_state_v1";
+const RESET_COUNT_KEY = "zeta_quiz_reset_count_v3";
+
+function getResetCount(){
+  const v = Number(localStorage.getItem(RESET_COUNT_KEY) || "0");
+  return Number.isFinite(v) ? v : 0;
+}
+function bumpResetCount(){
+  const next = getResetCount() + 1;
+  localStorage.setItem(RESET_COUNT_KEY, String(next));
+  return next;
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+}
+function roundIndexForQuestionIndex(qIndex){
+  const qid = QUIZ.questions[qIndex].id;
+  for (let i=0; i<QUIZ.rounds.length; i++){
+    if (QUIZ.rounds[i].qids.includes(qid)) return i;
+  }
+  return QUIZ.rounds.length - 1;
+}
+function maxScoreUpToRound(rIdx){
+  let m = 0;
+  for (let i=0; i<=rIdx; i++) m += QUIZ.rounds[i].max;
+  return m;
+}
+function computeTeamScores(state){
+  let total = 0;
+  const perRound = Array(QUIZ.rounds.length).fill(0);
+  for (let i=0; i<QUIZ.questions.length; i++){
+    const q = QUIZ.questions[i];
+    const choice = state.answers[i];
+    if (choice !== null && choice === q.correct){
+      total += q.weight;
+      const r = roundIndexForQuestionIndex(i);
+      perRound[r] += q.weight;
+    }
+  }
+  const grandMax = QUIZ.rounds.reduce((a,r)=>a+r.max,0);
+  return { total, perRound, perRoundMax: QUIZ.rounds.map(r=>r.max), grandMax };
+}
+function saveTeamState(state){ localStorage.setItem(TEAM_STORAGE, JSON.stringify(state)); }
+function loadTeamState(){ try { const raw = localStorage.getItem(TEAM_STORAGE); return raw ? JSON.parse(raw) : null; } catch { return null; } }
+function clearTeamState(){ localStorage.removeItem(TEAM_STORAGE); }
+
+function saveHostState(state){ localStorage.setItem(HOST_STORAGE, JSON.stringify(state)); }
+function loadHostState(){ try { const raw = localStorage.getItem(HOST_STORAGE); return raw ? JSON.parse(raw) : null; } catch { return null; } }
+function clearHostState(){ localStorage.removeItem(HOST_STORAGE); }
+
+async function sha256Hex(str){
+  const data = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function appEl(){ return document.getElementById("app"); }
+
+function renderHome(){
+  const resets = getResetCount();
+  const cheatPill = resets >= 2 ? `<span class="pill warn">Reset count: ${resets} (cheat warning)</span>` : (resets===1 ? `<span class="pill warn">Reset count: 1</span>` : ``);
+
+  appEl().innerHTML = `
+    <h1>${escapeHtml(QUIZ.title)}</h1>
+    <div class="meta">
+      <span class="pill">Total max: 50</span>
+      <span class="pill">Rounds: 5</span>
+      <span class="pill">Dark mode</span>
+      ${cheatPill}
+    </div>
+
+    <div class="q">Choose a mode:</div>
+    <div class="grid2">
+      <div style="border:1px solid #223043; border-radius:14px; padding:12px; background:#0e1520;">
+        <div class="q" style="margin:0 0 8px; font-size:16px;"><b>Team mode</b></div>
+        <div class="note small">One phone per team. One question per screen. No going back. Scores computed automatically.</div>
+        <div class="row">
+          <button class="btn primary" id="teamStart">Open team mode</button>
+        </div>
+      </div>
+
+      <div style="border:1px solid #223043; border-radius:14px; padding:12px; background:#0e1520;">
+        <div class="q" style="margin:0 0 8px; font-size:16px;"><b>Host mode</b></div>
+        <div class="note small">Password-protected. Read questions + options, track team scores manually on this device.</div>
+        <div class="row">
+          <button class="btn" id="hostOpen">Open host mode</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="note small muted">Paper scoring maxes: 5, 10, 10, 10, 15 (total 50).</div>
+  `;
+
+  document.getElementById("teamStart").onclick = () => renderTeamStart();
+  document.getElementById("hostOpen").onclick = () => renderHostLogin();
+}
+
+// ---------------- TEAM MODE ----------------
+
+function renderTeamStart(){
+  const existing = loadTeamState();
+  const resets = getResetCount();
+  const cheat = resets >= 2 ? `<div class="note warn"><b>Cheat warning:</b> this device has been reset ${resets} times.</div>` : (resets===1 ? `<div class="note warn">Reset count: 1</div>` : ``);
+
+  if (existing && !existing.finished){ renderTeamQuestion(existing); return; }
+  if (existing && existing.finished){ renderTeamFinal(existing); return; }
+
+  appEl().innerHTML = `
+    <h1>Team mode</h1>
+    <div class="meta">
+      <span class="pill">No going back</span>
+      <span class="pill">Auto scoring</span>
+      <span class="pill">Local save</span>
+    </div>
+    ${cheat}
+    <div class="q">Enter your team name:</div>
+    <input id="teamName" type="text" placeholder="Team name" maxlength="40" />
+    <div class="row">
+      <button class="btn" id="back">Back</button>
+      <button class="btn primary" id="start">Start quiz</button>
+    </div>
+    <div class="note small">Answers lock in immediately. You cannot return to previous questions.</div>
+  `;
+
+  document.getElementById("back").onclick = () => renderHome();
+  document.getElementById("start").onclick = () => {
+    const name = (document.getElementById("teamName").value || "").trim();
+    if (!name){ alert("Please enter a team name."); return; }
+    const state = {
+      team: name,
+      qIndex: 0,
+      answers: Array(QUIZ.questions.length).fill(null),
+      finished: false,
+      roundScreensShown: Array(QUIZ.rounds.length).fill(false)
+    };
+    saveTeamState(state);
+    renderTeamQuestion(state);
+  };
+}
+
+function renderTeamQuestion(state){
+  const q = QUIZ.questions[state.qIndex];
+  const roundIdx = roundIndexForQuestionIndex(state.qIndex);
+  const r = QUIZ.rounds[roundIdx];
+  const scores = computeTeamScores(state);
+
+  appEl().innerHTML = `
+    <h1>Team mode</h1>
+    <div class="meta">
+      <span class="pill">Team: ${escapeHtml(state.team)}</span>
+      <span class="pill">${escapeHtml(r.name)}</span>
+      <span class="pill">Q ${state.qIndex+1} / ${QUIZ.questions.length}</span>
+      <span class="pill">Worth ${q.weight} pt${q.weight===1?"":"s"}</span>
+      <span class="pill">Running: ${scores.total} / ${maxScoreUpToRound(roundIdx)}</span>
+    </div>
+
+    <div class="q">${escapeHtml(q.text)}</div>
+    <div class="opts">
+      ${q.options.map((opt,i)=>`
+        <button class="opt" data-i="${i}">${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</button>
+      `).join("")}
+    </div>
+    <div class="note" id="note">Tap an answer to lock it in.</div>
+
+    <div class="row">
+      <button class="btn" id="home">Home</button>
+      <button class="btn" id="reset">Reset</button>
+    </div>
+  `;
+
+  document.getElementById("home").onclick = () => renderHome();
+  document.getElementById("reset").onclick = () => { bumpResetCount(); clearTeamState(); renderTeamStart(); };
+
+  [...appEl().querySelectorAll("button.opt")].forEach(btn => {
+    btn.onclick = () => {
+      const chosen = Number(btn.dataset.i);
+      state.answers[state.qIndex] = chosen;
+      saveTeamState(state);
+
+      [...appEl().querySelectorAll("button.opt")].forEach(b=>b.disabled=true);
+
+      const correct = chosen === q.correct;
+      const note = document.getElementById("note");
+      note.innerHTML = correct
+        ? `<span class="ok">Locked in. Correct (+${q.weight}).</span>`
+        : `<span class="bad">Locked in. Nice effort (+0).</span>`;
+
+      setTimeout(() => {
+        const nowRoundIdx = roundIndexForQuestionIndex(state.qIndex);
+        const isEndOfRound = state.qIndex === QUIZ.rounds[nowRoundIdx].endIndex;
+
+        if (isEndOfRound && !state.roundScreensShown[nowRoundIdx]){
+          state.roundScreensShown[nowRoundIdx] = true;
+          saveTeamState(state);
+          renderTeamRoundComplete(state, nowRoundIdx);
+          return;
+        }
+
+        if (state.qIndex + 1 >= QUIZ.questions.length){
+          state.finished = true;
+          saveTeamState(state);
+          renderTeamFinal(state);
+        } else {
+          state.qIndex += 1;
+          saveTeamState(state);
+          renderTeamQuestion(state);
+        }
+      }, 650);
+    };
+  });
+}
+
+function renderTeamRoundComplete(state, roundIdx){
+  const scores = computeTeamScores(state);
+  const r = QUIZ.rounds[roundIdx];
+  const runningMax = maxScoreUpToRound(roundIdx);
+  const isLastRound = roundIdx === QUIZ.rounds.length - 1;
+
+  appEl().innerHTML = `
+    <h1>Round complete</h1>
+    <div class="meta">
+      <span class="pill">Team: ${escapeHtml(state.team)}</span>
+      <span class="pill">${escapeHtml(r.name)}</span>
+    </div>
+    <div class="q">Round score: <b>${scores.perRound[roundIdx]} / ${scores.perRoundMax[roundIdx]}</b></div>
+    <div class="note">Running total: <b>${scores.total} / ${runningMax}</b></div>
+
+    <div class="row">
+      <button class="btn primary" id="continue">${isLastRound ? "See final score" : "Next round"}</button>
+      <button class="btn" id="home">Home</button>
+      <button class="btn" id="reset">Reset</button>
+    </div>
+  `;
+
+  document.getElementById("home").onclick = () => renderHome();
+  document.getElementById("reset").onclick = () => { bumpResetCount(); clearTeamState(); renderTeamStart(); };
+
+  document.getElementById("continue").onclick = () => {
+    if (state.qIndex + 1 >= QUIZ.questions.length){
+      state.finished = true;
+      saveTeamState(state);
+      renderTeamFinal(state);
+    } else {
+      state.qIndex += 1;
+      saveTeamState(state);
+      renderTeamQuestion(state);
+    }
+  };
+}
+
+function renderTeamFinal(state){
+  const scores = computeTeamScores(state);
+  const pct = Math.round((scores.total / scores.grandMax) * 100);
+  const resets = getResetCount();
+  const cheatPill = resets >= 2 ? `<span class="pill warn">Reset count: ${resets} (cheat warning)</span>` : (resets===1 ? `<span class="pill warn">Reset count: 1</span>` : ``);
+
+  const reviewItems = QUIZ.questions.map((q, i) => {
+    const chosen = state.answers[i];
+    const chosenTxt = chosen === null ? "No answer" : `${String.fromCharCode(65+chosen)}. ${q.options[chosen]}`;
+    const correctTxt = `${String.fromCharCode(65+q.correct)}. ${q.options[q.correct]}`;
+    const ok = chosen !== null && chosen === q.correct;
+    return `
+      <div class="reviewItem">
+        <div class="reviewTop">
+          <div><b>Q${q.id}</b> <span class="muted">(${q.weight}pt${q.weight===1?"":"s"})</span></div>
+          <div class="tag ${ok ? "ok" : "bad"}">${ok ? "Correct" : "Not this time"}</div>
+        </div>
+        <div class="note" style="margin-top:8px;"><b>${escapeHtml(q.text)}</b></div>
+        <div class="note small">Your answer: <span class="${ok?"ok":"bad"}">${escapeHtml(chosenTxt)}</span></div>
+        <div class="note small">Correct: <span class="ok">${escapeHtml(correctTxt)}</span></div>
+        <div class="note small muted">Curious bit: ${escapeHtml(q.explain)}</div>
+      </div>
+    `;
+  }).join("");
+
+  sha256Hex(`${state.team}|${scores.total}|${scores.grandMax}|v1`).then(token => {
+    const shortToken = token.slice(0,10).toUpperCase();
+    appEl().innerHTML = `
+      <h1>Final score</h1>
+      <div class="meta">
+        <span class="pill">Team: ${escapeHtml(state.team)}</span>
+        <span class="pill">Total: ${scores.total} / ${scores.grandMax} (${pct}%)</span>
+        <span class="pill mono">Token: ${shortToken}</span>
+        ${cheatPill}
+      </div>
+
+      <h2>Round breakdown</h2>
+      <div class="note">
+        ${scores.perRound.map((s, i) => `• ${escapeHtml(QUIZ.rounds[i].name)}: <b>${s} / ${scores.perRoundMax[i]}</b>`).join("<br/>")}
+      </div>
+
+      <div class="divider"></div>
+      <h2>Full review (answers + curious bits)</h2>
+      <div class="review">${reviewItems}</div>
+
+      <div class="divider"></div>
+      <div class="row">
+        <button class="btn" id="home">Home</button>
+        <button class="btn" id="reset">Reset</button>
+        <button class="btn primary" id="copy">Copy summary</button>
+      </div>
+      <div class="note small">Show this screen to the quiz master to record your score.</div>
+    `;
+
+    document.getElementById("home").onclick = () => renderHome();
+    document.getElementById("reset").onclick = () => { bumpResetCount(); clearTeamState(); renderTeamStart(); };
+    document.getElementById("copy").onclick = async () => {
+      const text = `${state.team}: ${scores.total}/${scores.grandMax} (${pct}%) Token ${shortToken} Resets ${resets}`;
+      try { await navigator.clipboard.writeText(text); alert("Copied!"); }
+      catch { prompt("Copy this:", text); }
+    };
+  });
+}
+
+// ---------------- HOST MODE ----------------
+
+function renderHostLogin(){
+  const existing = loadHostState();
+  if (existing && existing.authed){ renderHostDashboard(existing); return; }
+
+  appEl().innerHTML = `
+    <h1>Host mode</h1>
+    <div class="meta">
+      <span class="pill">Password protected</span>
+      <span class="pill">Manual scoring</span>
+      <span class="pill">Local save</span>
+    </div>
+    <div class="q">Enter password:</div>
+    <input id="pw" type="password" placeholder="Password" />
+    <div class="row">
+      <button class="btn" id="back">Back</button>
+      <button class="btn primary" id="login">Enter host mode</button>
+    </div>
+    <div class="note small muted">Local-only gate (no server). Password: raf</div>
+  `;
+
+  document.getElementById("back").onclick = () => renderHome();
+  document.getElementById("login").onclick = async () => {
+    const pw = document.getElementById("pw").value || "";
+    const h = await sha256Hex(pw);
+    if (h !== PW_HASH){ alert("Nope 🙂"); return; }
+    const state = { authed: true, qIndex: 0, teams: [], lastUpdated: Date.now() };
+    saveHostState(state);
+    renderHostDashboard(state);
+  };
+}
+
+function hostComputeTotals(host){
+  for (const t of host.teams){
+    t.total = (t.scoresByRound || []).reduce((a,b)=>a+Number(b||0),0);
+  }
+}
+
+function hostQuestionCard(host){
+  const q = QUIZ.questions[host.qIndex];
+  const roundIdx = roundIndexForQuestionIndex(host.qIndex);
+  const r = QUIZ.rounds[roundIdx];
+  const opts = q.options.map((o,i)=>`<div class="note" style="margin-top:6px;"><b>${String.fromCharCode(65+i)}.</b> ${escapeHtml(o)}</div>`).join("");
+  return `
+    <div class="meta">
+      <span class="pill">${escapeHtml(r.name)}</span>
+      <span class="pill">Worth ${q.weight} pt${q.weight===1?"":"s"}</span>
+    </div>
+    <div class="q"><b>${escapeHtml(q.text)}</b></div>
+    ${opts}
+  `;
+}
+
+function hostReveal(host){
+  const q = QUIZ.questions[host.qIndex];
+  const letter = String.fromCharCode(65 + q.correct);
+  const correct = `${letter}. ${q.options[q.correct]}`;
+  alert(`Correct answer: ${correct}\n\nCurious bit: ${q.explain}`);
+}
+
+function hostAddTeam(host){
+  const name = prompt("Team name?");
+  if (!name) return;
+  host.teams.push({ name: name.trim(), scoresByRound: Array(QUIZ.rounds.length).fill(0), total: 0 });
+  saveHostState(host);
+  renderHostDashboard(host);
+}
+
+function hostEditTeam(host, idx){
+  const t = host.teams[idx];
+  if (!t) return;
+  const per = t.scoresByRound || Array(QUIZ.rounds.length).fill(0);
+  for (let i=0; i<QUIZ.rounds.length; i++){
+    const r = QUIZ.rounds[i];
+    const val = prompt(`Score for ${t.name} – Round ${i+1} (0 to ${r.max}):`, String(per[i]||0));
+    if (val === null) return;
+    const n = Number(val);
+    const clipped = Number.isFinite(n) ? Math.max(0, Math.min(r.max, n)) : (per[i]||0);
+    per[i] = clipped;
+  }
+  t.scoresByRound = per;
+  saveHostState(host);
+  renderHostDashboard(host);
+}
+
+function hostExport(host){
+  hostComputeTotals(host);
+  const lines = [];
+  lines.push("Team,R1,R2,R3,R4,R5,Total");
+  for (const t of host.teams){
+    const per = (t.scoresByRound || Array(QUIZ.rounds.length).fill(0)).map(x=>Number(x||0));
+    lines.push([t.name, ...per, per.reduce((a,b)=>a+b,0)].map(x => `"${String(x).replaceAll('"','""')}"`).join(","));
+  }
+  const csv = lines.join("\n");
+  try { navigator.clipboard.writeText(csv); alert("Copied CSV to clipboard."); }
+  catch { prompt("Copy CSV:", csv); }
+}
+
+function renderHostDashboard(host){
+  hostComputeTotals(host);
+  const totalMax = QUIZ.rounds.reduce((a,r)=>a+r.max,0);
+
+  const rows = host.teams.map((t, idx) => {
+    const per = t.scoresByRound || Array(QUIZ.rounds.length).fill(0);
+    const total = per.reduce((a,b)=>a+Number(b||0),0);
+    return `
+      <tr>
+        <td><b>${escapeHtml(t.name)}</b></td>
+        ${per.map(s=>`<td class="right">${Number(s||0)}</td>`).join("")}
+        <td class="right"><b>${total}</b></td>
+        <td class="right">
+          <button class="btn" data-edit="${idx}">Edit</button>
+          <button class="btn danger" data-del="${idx}">Remove</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  appEl().innerHTML = `
+    <h1>Host mode</h1>
+    <div class="meta">
+      <span class="pill">Question: ${host.qIndex+1} / ${QUIZ.questions.length}</span>
+      <span class="pill">Total max: ${totalMax}</span>
+      <span class="pill">Teams: ${host.teams.length}</span>
+    </div>
+
+    <div class="grid2">
+      <div style="border:1px solid #223043; border-radius:14px; padding:12px; background:#0e1520;">
+        <div class="q" style="margin:0 0 8px; font-size:16px;"><b>Question reader</b></div>
+        <div class="note small muted">Read out the question and options. Reveal the answer when ready.</div>
+        <div class="divider"></div>
+        ${hostQuestionCard(host)}
+        <div class="row">
+          <button class="btn" id="prevQ">Prev</button>
+          <button class="btn primary" id="nextQ">Next</button>
+          <button class="btn" id="reveal">Reveal answer</button>
+        </div>
+      </div>
+
+      <div style="border:1px solid #223043; border-radius:14px; padding:12px; background:#0e1520;">
+        <div class="q" style="margin:0 0 8px; font-size:16px;"><b>Team scoreboard</b></div>
+        <div class="note small muted">Add teams, then record round scores. Totals update automatically.</div>
+
+        <div class="row" style="justify-content:flex-start;">
+          <button class="btn primary" id="addTeam">Add team</button>
+          <button class="btn" id="export">Export scores</button>
+          <button class="btn danger" id="resetHost">Reset host data</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="overflow:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Team</th>
+                ${QUIZ.rounds.map((r,i)=>`<th class="right">R${i+1}</th>`).join("")}
+                <th class="right">Total</th>
+                <th class="right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows || `<tr><td colspan="${QUIZ.rounds.length+3}" class="muted">No teams yet. Click “Add team”.</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="row">
+      <button class="btn" id="home">Home</button>
+      <button class="btn" id="logout">Lock host mode</button>
+    </div>
+  `;
+
+  document.getElementById("home").onclick = () => renderHome();
+  document.getElementById("logout").onclick = () => { host.authed=false; saveHostState(host); renderHostLogin(); };
+
+  document.getElementById("prevQ").onclick = () => { host.qIndex = Math.max(0, host.qIndex-1); saveHostState(host); renderHostDashboard(host); };
+  document.getElementById("nextQ").onclick = () => { host.qIndex = Math.min(QUIZ.questions.length-1, host.qIndex+1); saveHostState(host); renderHostDashboard(host); };
+  document.getElementById("reveal").onclick = () => hostReveal(host);
+
+  document.getElementById("addTeam").onclick = () => hostAddTeam(host);
+  document.getElementById("export").onclick = () => hostExport(host);
+  document.getElementById("resetHost").onclick = () => {
+    if (confirm("Reset host scoreboard data on this device?")) { clearHostState(); renderHostLogin(); }
+  };
+
+  [...appEl().querySelectorAll("button[data-edit]")].forEach(b => {
+    b.onclick = () => hostEditTeam(host, Number(b.dataset.edit));
+  });
+  [...appEl().querySelectorAll("button[data-del]")].forEach(b => {
+    b.onclick = () => {
+      const idx = Number(b.dataset.del);
+      const name = host.teams[idx]?.name || "team";
+      if (confirm(`Remove ${name}?`)) { host.teams.splice(idx,1); saveHostState(host); renderHostDashboard(host); }
+    };
+  });
+}
+
+(function boot(){ renderHome(); })();
+</script>
+</body>
+</html>
